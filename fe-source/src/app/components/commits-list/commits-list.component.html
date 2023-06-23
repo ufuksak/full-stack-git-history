@@ -1,0 +1,94 @@
+<div class="list row">
+  <div class="col-lg-12">
+    <div class="input-group mb-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search by commit summary"
+        [(ngModel)]="name"
+      />
+      <div class="input-group-append">
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="searchName()"
+        >
+          Search
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-12">
+    <h4>Commits</h4>
+    <div class="mt-3">
+      <table width="100%">
+        <tr>
+          <td width="50%" align="left">
+            Items per Page:
+            <select (change)="handlePageSizeChange($event)">
+              <option *ngFor="let size of pageSizes" [ngValue]="size">
+                {{ size }}
+              </option>
+            </select>
+          </td>
+          <td width="50%" align="right">
+            <input type="image" src="assets/svg/example-button_adobe_express.svg" style="width:100px;" (click)="refreshList()"/>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <ul class="list-group">
+      <li
+        class="list-group-item"
+        *ngFor="let commit of commitsFiltered | paginate : {
+          itemsPerPage: pageSize,
+          currentPage: page,
+          totalItems: count
+        }; let i = index"
+        [class.active]="i == currentIndex"
+        (click)="setActiveCommit(commit, i)"
+      >
+        <table width="100%">
+          <tr>
+            <td width="5%">
+              <img src="{{ commit.author.avatar_url }}" class="img-thumbnail">
+            </td>
+            <td width="65%" align="left" valign="middle">
+              <table>
+                <tr>
+                  <td>
+                    <span style="font-weight:bold; font-size: 50%;">{{commit.commit.message}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <table>
+                      <tr>
+                        <td>
+                          <span style="font-weight:bold; font-size: 50%;">{{commit.author.login}}</span>
+                        </td>
+                        <td>
+                          <span style="font-size: 50%;"> committed {{commit.commit.committer.date}}</span>
+                        </td>
+                        <td>
+                          <span class="color-fg-success">
+                            <svg aria-label="2 / 2 checks OK" role="img" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check">
+                              <path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path>
+                            </svg>
+                          </span>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+            <td width="30%" align="left" valign="middle">
+              <span style="font-size: 50%;" >commit: {{commit.sha}} </span>
+            </td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </div>
+</div>

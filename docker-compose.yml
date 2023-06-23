@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+
+  ui:
+    build:
+      context: ./fe-source
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "80:80"
+
+  api:
+    build:
+      context: ./be-source
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8080:8080"
